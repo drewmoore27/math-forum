@@ -12,9 +12,9 @@ spl_autoload_register('my_autoloader');
 
 //Connect to mathforum database
 $localhost = 'localhost';
-$username = 'drewmoore';
-$password = 'drewmoorepa$$w0rd';
-$database = 'mathforum';
+$username = 'USERNAME';
+$password = 'PASSWORD';
+$database = 'DATABASE';
 
 $mysqli = new mysqli($localhost, $username, $password, $database);
 
