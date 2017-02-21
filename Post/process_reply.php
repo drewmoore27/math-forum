@@ -1,6 +1,6 @@
 <?php
 session_start();
-$config_array = include "../MathForumResources/config.php";
+$config_array = include "../config.php";
 $mysqli = $config_array['conn'];
 
 ini_set('display_errors', '1');
