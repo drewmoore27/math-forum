@@ -1,12 +1,12 @@
 <html>
-    
+
 <?php
 //Post/index.php
 $mathjax_on = True; //k
 
 
 //Config file connects to database and defines resource file strings.
-$config_array = include '/ta/drewmoore/public_html/MathForum/MathForumResources/config.php';
+$config_array = include '/ta/drewmoore/public_html/MathForum/config.php';
 
 
     ini_set('display_errors', '1');
@@ -27,13 +27,13 @@ if(!isset($_SESSION['user_name'])){
     header("Location: https://math.uchicago.edu/~drewmoore/MathForum/Login/");
 }
 
-    
-    
+
+
 
 echo "
     <head>
         <link href='https://fonts.googleapis.com/css?family=Roboto:400italic,400' rel='stylesheet'                   type='text/css'>
-        
+
         <title>Post ID:
     ";
 
@@ -41,10 +41,10 @@ echo $_GET['id'];
 
 echo "
         </title>
-        
+
         <!--Stylesheet-->
         <link rel='stylesheet' type='text/css' href='" . $stylesheet . "'/>
-    
+
         <!--Icon - FIX -->
         <link rel='shortcut icon' href='../favicon.ico'/>
     ";
@@ -59,26 +59,26 @@ if ($mathjax_on) {
         ";
 }
 
-echo "    
+echo "
         <!--jQuery-->
         <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'>
         </script>
     </head>";
-    
-        
 
-    
-    
+
+
+
+
 
 echo "<body>";
 
 
 include $header;
-    
-echo "<main>";    
 
-    
-    
+echo "<main>";
+
+
+
 
     //defines classes Content, and subclasses Post and Response
     //additionally, ContentUnsubmitted and its counterparts
@@ -92,7 +92,7 @@ echo "<main>";
 
 
     if (isset($_SESSION['focus_id'])) {
-        echo 
+        echo
             "<script>
             location.hash = '". $_SESSION['focus_id'] . " ';
             </script>";
@@ -100,19 +100,19 @@ echo "<main>";
     }
 
 
-echo "</main>";    
+echo "</main>";
 
 
 
 echo "<!--Javascript for Buttons-->
         <script type='text/javascript' src='" . $javascript . "/buttons.js'></script>
-    ";    
+    ";
 ?>
-   
-    
-    
-    
-    
-    
-</body> 
+
+
+
+
+
+
+</body>
 </html>

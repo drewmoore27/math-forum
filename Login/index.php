@@ -2,7 +2,7 @@
 
 <html>
 <?php
-$config_array = include '/ta/drewmoore/public_html/MathForum/MathForumResources/config.php';
+$config_array = include '/ta/drewmoore/public_html/MathForum/config.php';
 $mysqli = $config_array['conn'];
 $header = $config_array['header'];
 $stylesheet = $config_array['stylesheet'];
@@ -16,10 +16,10 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
         $_POST['username']);
     $password = $mysqli->real_escape_string(
         $_POST['password']);
-     
+
     $login_query = "
-    SELECT user_id, user_name 
-    FROM users 
+    SELECT user_id, user_name
+    FROM users
     WHERE user_name = '"
         . $username .
         "'
@@ -27,16 +27,17 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
         . $password .
         "'";
     $login_result = $mysqli->query($login_query);
-    
+
     if($login_row = $login_result->fetch_assoc()) {
         $_SESSION['user_id'] =$login_row['user_id'];
         $_SESSION['user_name'] = $login_row['user_name'];
         $active_query = "
-            UPDATE users 
-            SET last_active = (select(now())) 
+            UPDATE users
+            SET last_active = (select(now()))
             WHERE user_id =" . $login_row['user_id'];
         $mysqli->query($active_query);
-        
+
+        //Return to entry page (if redirected to Login)
         if(isset($_SESSION['current_page'])) {
             header ("Location: " . $_SESSION['current_page']);
         }
@@ -44,7 +45,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
             header("Location: ../Home/");
         }
     }
-    
+
     else {
      echo "Error." ;
      header("Location: ..");
@@ -54,7 +55,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
 echo "
     <head>
         <link href='https://fonts.googleapis.com/css?family=Roboto:400italic,400' rel='stylesheet'                   type='text/css'>
-        
+
         <title>All Posts
     ";
 
@@ -62,10 +63,10 @@ echo $_GET['id'];
 
 echo "
         </title>
-        
+
         <!--Stylesheet-->
         <link rel='stylesheet' type='text/css' href='" . $stylesheet . "'/>
-    
+
         <!--Icon - FIX -->
         <link rel='shortcut icon' href='../favicon.ico'/>
     ";
@@ -80,14 +81,14 @@ if ($mathjax_on) {
         ";
 }
 
-echo "    
+echo "
         <!--jQuery-->
         <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'>
         </script>
     </head>";
 ?>
-    
-<main>    
+
+<main>
 <body>
     <h3>Login</h3>
     <form method='post'>
@@ -95,7 +96,7 @@ echo "
         <label>Password :</label><input type="password" name = "password"><br /><br />
         <input type='submit'>
     </form>
-    
+
 </body>
 </main>
 

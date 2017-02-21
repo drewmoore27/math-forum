@@ -1,7 +1,7 @@
-<html>    
+<html>
 <?php
 //Config file connects to database and defines resource file strings.
-$config_array = include '/ta/drewmoore/public_html/MathForum/MathForumResources/config.php';
+$config_array = include '/ta/drewmoore/public_html/MathForum/config.php';
 
 
     ini_set('display_errors', '1');
@@ -26,13 +26,13 @@ if(!isset($_SESSION['user_name'])){
 echo "
     <head>
         <link href='https://fonts.googleapis.com/css?family=Roboto:400italic,400' rel='stylesheet'                   type='text/css'>
-        
+
         <title>Submit
         </title>
-        
+
         <!--Stylesheet-->
         <link rel='stylesheet' type='text/css' href='" . $stylesheet . "'/>
-    
+
         <!--Icon - FIX -->
         <link rel='shortcut icon' href='../favicon.ico'/>
     ";
@@ -47,18 +47,18 @@ if ($mathjax_on) {
         ";
 }
 
-echo "    
+echo "
         <!--jQuery-->
         <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'>
         </script>
     </head>";
-    
+
 echo "<body>";
 
 
 include $header;
 ?>
-    
+
 <main>
     <div>
 <form class="submit_post" method='post' action='process_submit.php'>
