@@ -1,6 +1,6 @@
 <?php
 session_start();
-$config_array = include "../MathForumResources/config.php";
+$config_array = include "../config.php";
 $mysqli = $config_array['conn'];
 
 ini_set('display_errors', '1');
@@ -8,8 +8,8 @@ error_reporting(E_ALL);
 
 
 
-$subject = $mysqli->real_escape_string($_POST['subject']); 
-$content = $mysqli->real_escape_string($_POST['content']); 
+$subject = $mysqli->real_escape_string($_POST['subject']);
+$content = $mysqli->real_escape_string($_POST['content']);
 $user_id = $_SESSION['user_id'];
 
 $is_anonymous = isset($_POST['is_anonymous']);
