@@ -91,6 +91,7 @@ echo "
         <label>Password :</label><input type="password" name = "password"><br /><br />
         <input type='submit'>
     </form>
+    <p>Or <a href="../Signup">signup here.</a></p>
 
 </body>
 </main>

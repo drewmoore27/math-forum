@@ -29,10 +29,10 @@ class NewUser {
     if ($this->name_is_unique($conn)) {
 
       $values = "('" . $this->user_name . "', '" . $this->user_pass .
-        "', '" . $this->user_salt . "', '" . $this->user_email .  "', (SELECT NOW()), (SELECT NOW()) )";
+        "', '" . $this->user_salt . "', '" . $this->user_email .  "', (SELECT NOW()), (SELECT NOW()), 1 )";
 
       $query = "
-      INSERT INTO users (user_name, user_pass, user_salt, user_email, user_date, last_active)
+      INSERT INTO users (user_name, user_pass, user_salt, user_email, user_date, last_active, pw_is_hashed)
       VALUES " . $values;
 
       $conn->query($query);

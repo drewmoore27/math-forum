@@ -97,7 +97,7 @@ class User {
     if (!$this->is_password($current_pass)) {
       return 0;   // if wrong password entered, return false
     }
-    if ($pass1 == $pass 2) {
+    if ($pass1 == $pass2) {
       $this->update_password($conn, $pass1);
       return 1; //password updated!
     }

@@ -1,4 +1,23 @@
 <html>
+    <head>
+   <style type="text/css">
+    .container {
+        width: 200px;
+        clear: both;
+    }
+    .container input {
+        width: 100%;
+        clear: both;
+    }
+
+    </style>
+        
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400italic,400' rel='stylesheet'                   type='text/css'>
+        
+    <title>Sign Up</title>
+    <link rel='shortcut icon' href='../favicon.ico'/>
+
+    
 <?php
 $config_array = include '../config.php';
 $mysqli = $config_array['conn'];
@@ -7,58 +26,43 @@ $stylesheet = $config_array['stylesheet'];
 $icon = $config_array['icon'];
 $javascript = $config_array['javascript'];
 
-echo "
-    <head>
-        <link href='https://fonts.googleapis.com/css?family=Roboto:400italic,400' rel='stylesheet'                   type='text/css'>
+session_start();
 
-        <title>All Posts
-        </title>
+echo "<!--Stylesheet-->
+        <link rel='stylesheet' type='text/css' href='" . $stylesheet . "'/>";
 
-        <!--Stylesheet-->
-        <link rel='stylesheet' type='text/css' href='" . $stylesheet . "'/>
-
-        <!--Icon - FIX -->
-        <link rel='shortcut icon' href='../favicon.ico'/>
-    ";
-
-$mathjax_on = True; //k
-if ($mathjax_on) {
-    echo "
-        <!--MathJaX-->
-        <script type='text/javascript'
-        src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'>
-        </script>
-        ";
-}
-
-echo "
-        <!--jQuery-->
-        <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'>
-        </script>
-    </head>";
 
  ?>
-
+    </head>
+    
  <main>
  <body>
      <h3>Signup</h3>
+     <div class="container">
      <form method='post' action = 'process_new_user.php'>
        <label>Username :</label><input type="text" name = "user_name"><br /><br />
        <label>Email :</label><input type="text" name = "user_email"><br /><br />
          <label>Password :</label><input type="password" name = "user_pass"><br /><br />
          <label>Confirm Password :</label><input type="password" name = "confirm_pass"><br /><br />
+         <label>Key :</label><input type="text" name = "key"><br /><br />
          <input type='submit'>
-     </form>
+     </form></div>
      <?php
-     if (isset($_POST['name_taken'])) {
+     if (isset($_SESSION['name_taken'])) {
        echo "<p>Username taken. Try another name.</p>";
      }
-      ?>
-      <?php
-      if (isset($_POST['wrong_confirm'])) {
+
+      if (isset($_SESSION['wrong_confirm'])) {
         echo "<p>Passwords did not match. Try again.</p>";
       }
+    if (isset($_SESSION['wrong_key'])) {
+        echo "<p>Incorrect key. Try again.</p>";
+      }
+        unset($_SESSION['name_taken']);
+        unset($_SESSION['wrong_confirm']);
+        unset($_SESSION['wrong_key']);
        ?>
+     
 
  </body>
  </main>
