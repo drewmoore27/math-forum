@@ -1,3 +1,4 @@
+<html> <main>
 <?php
 session_start();
 $config_array = include "../config.php";
@@ -28,3 +29,4 @@ $_SESSION['user_name'] = $user->user_name;
 
 header("Location: ../Home/")
  ?>
+ </main></html>
