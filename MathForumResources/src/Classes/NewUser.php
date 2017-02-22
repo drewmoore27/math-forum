@@ -39,7 +39,7 @@ class NewUser {
 
       $conn->query($query);
       $id = $conn->insert_id;
-      return new User::from_id($conn, $id);
+      return User::from_id($conn, $id);
     }
     else {
       return False;
