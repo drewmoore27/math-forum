@@ -7,6 +7,8 @@ $mysqli = $config_array['conn'];
 ini_set('display_errors', '1');
 error_reporting(E_ALL);
 
+echo "hi";
+
 $user_name = $_POST['user_name'];
 $user_pass = $_POST['user_pass'];
 $user_email = $_POST['user_email'];
