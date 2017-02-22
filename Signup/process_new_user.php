@@ -3,6 +3,8 @@ session_start();
 $config_array = include "../config.php";
 $mysqli = $config_array['conn'];
 
+ini_set('display_errors', '1');
+error_reporting(E_ALL);
 
 $user_name = $_POST['user_name'];
 $user_pass = $_POST['user_pass'];
