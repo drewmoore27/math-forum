@@ -57,11 +57,6 @@ echo "
         <link href='https://fonts.googleapis.com/css?family=Roboto:400italic,400' rel='stylesheet'                   type='text/css'>
 
         <title>All Posts
-    ";
-
-echo $_GET['id'];
-
-echo "
         </title>
 
         <!--Stylesheet-->

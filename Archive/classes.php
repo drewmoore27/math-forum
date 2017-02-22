@@ -8,8 +8,4 @@ include "Post.php";
 include "MathContentUnsubmitted.php";
 include "PostUnsubmitted.php";
 include "ResponseUnsubmitted.php";
-
-
-
-
 ?>

@@ -13,7 +13,7 @@
 
 
 //Config file connects to database and defines resource file strings.
-$config_array = include '/ta/drewmoore/public_html/MathForum/MathForumResources/config.php';
+$config_array = include '../config.php';
 
 $text = "kjkj\n\n\nkjkj";
 
