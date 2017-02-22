@@ -6,7 +6,7 @@ $mathjax_on = True; //k
 
 
 //Config file connects to database and defines resource file strings.
-$config_array = include '/ta/drewmoore/public_html/MathForum/config.php';
+$config_array = include '../config.php';
 
 
     ini_set('display_errors', '1');

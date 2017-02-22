@@ -2,7 +2,7 @@
 
 <html>
 <?php
-$config_array = include '/ta/drewmoore/public_html/MathForum/config.php';
+$config_array = include '../config.php';
 $mysqli = $config_array['conn'];
 $header = $config_array['header'];
 $stylesheet = $config_array['stylesheet'];

@@ -26,7 +26,7 @@ $content->edit_subject($mysqli, $edit_subject_text, $user_id);
 
 
 
-//send to 
+//send to
 $theurl = "Location: https://math.uchicago.edu/~drewmoore/MathForum/Post?id=" . $id;
 header($theurl);
 
