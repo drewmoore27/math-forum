@@ -94,7 +94,9 @@ class User {
   }
 
   public function check_update_password($conn, $current_pass, $pass1, $pass2) {
-    if (!$this->is_password($current_pass)) { return 0 } // if wrong password entered, return false
+    if (!$this->is_password($current_pass)) {
+      return 0;   // if wrong password entered, return false
+    }
     if ($pass1 == $pass 2) {
       $this->update_password($conn, $pass1);
       return 1; //password updated!
