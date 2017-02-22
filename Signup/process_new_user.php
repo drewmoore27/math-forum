@@ -9,6 +9,7 @@ error_reporting(E_ALL);
 
 $user_name = $_POST['user_name'];
 $user_pass = $_POST['user_pass'];
+$user_email = $_POST['user_email'];
 $confirm_pass = $_POST['confirm_pass'];
 
 if (!$user_pass == $confirm_pass) {
@@ -16,7 +17,7 @@ if (!$user_pass == $confirm_pass) {
   header("Location: ../Signup/");
 }
 
-$newuser = new NewUser($user_name,$user_pass);
+$newuser = new NewUser($user_name,$user_pass, $user_email);
 
 if (!$newuser->name_is_unique($mysqli)) {
   $_POST['name_taken'] = 1;
