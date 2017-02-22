@@ -43,7 +43,8 @@ echo "
  <body>
      <h3>Signup</h3>
      <form method='post' action = 'process_new_user.php'>
-         <label>Username :</label><input type="text" name = "user_name"><br /><br />
+       <label>Username :</label><input type="text" name = "user_name"><br /><br />
+       <label>Email :</label><input type="text" name = "user_email"><br /><br />
          <label>Password :</label><input type="password" name = "user_pass"><br /><br />
          <label>Confirm Password :</label><input type="password" name = "confirm_pass"><br /><br />
          <input type='submit'>
