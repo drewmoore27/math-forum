@@ -15,7 +15,7 @@ class User {
 
   public static function from_name($conn, $name) {
     $user = new self();
-    $user->fill_from_id($conn, $id);
+    $user->fill_from_name($conn, $name);
     return $user;
   }
 
@@ -27,11 +27,14 @@ class User {
 
   protected function fill_from_name($conn, $name) {
     $query = "
-      SELECT user_id, user_name, user_pass, user_email, user_date, last_active, pw_is_hashed, user_salt
+      SELECT user_id, user_name, user_pass, user_email, user_date, last_active, pw_is_hashed, user_salt, responses_checked_at
       FROM users
-      WHERE user_name =
-    " . $name;
+      WHERE user_name = '" . $name . "'";
     $result = $conn->query($query);
+    if (!$result) {
+            echo $query;
+            die($conn->error);
+        }
     $row = $result->fetch_assoc();
     $this->fill_from_row($row);
   }
@@ -46,6 +49,10 @@ class User {
       WHERE user_id =
     " . $id;
     $result = $conn->query($query);
+        if (!$result) {
+            echo $query;
+            die($conn->error);
+        }
     $row = $result->fetch_assoc();
     $this->fill_from_row($row);
   }
@@ -69,8 +76,10 @@ class User {
     if ($this->pw_is_hashed) {
       $pass_check = crypt($pass, $this->user_salt);
     }
-    else {$pass_check = $pass;}
-    return ($pass_check == $this->user_pass);
+    else {
+        $pass_check = $pass;
+    }
+    return ($pass_check = $this->user_pass);
   }
 
   public function update_password($conn, $pass) {
@@ -102,12 +111,20 @@ class User {
       UPDATE users
       SET last_active = (SELECT NOW())
       WHERE user_id = " . $this->user_id;
-    $conn->query($query);
+    $result = $conn->query($query);
+          if (!$result) {
+            echo $query;
+            die($conn->error);
+        }
     $query2 = "
       SELECT last_active
       FROM users
       WHERE USER_ID = " . $this->user_id;
     $result = $conn->query($query2);
+          if (!$result) {
+            echo $query;
+            die($conn->error);
+        }
     $row = $result->fetch_assoc();
     $active = $row['last_active'];
     $this->last_active = $active;

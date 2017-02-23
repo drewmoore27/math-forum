@@ -8,41 +8,9 @@ $header = $config_array['header'];
 $stylesheet = $config_array['stylesheet'];
 $icon = $config_array['icon'];
 $javascript = $config_array['javascript'];
+ini_set('display_errors', '1');
+error_reporting(E_ALL);
 
-session_start();
-if($_SERVER["REQUEST_METHOD"]=="POST") {
-    // username and password sent
-    $username = $mysqli->real_escape_string(
-        $_POST['username']);
-    $password = $mysqli->real_escape_string(
-        $_POST['password']);
-
-    if (User::user_exists($mysqli, $username)) {
-      $theUser = User::fill_from_name($mysqli,$username);
-
-      if ($theUser->is_password($password)) {
-        $_SESSION['user_id'] =$login_row['user_id'];
-        $_SESSION['user_name'] = $login_row['user_name'];
-        $newUser->update_last_active($mysqli);
-        if(isset($_SESSION['current_page'])) {
-            header ("Location: " . $_SESSION['current_page']);
-        }
-        else{
-            header("Location: ../Home/");
-        }
-      }
-      else {
-        $_SESSION['wrong_pass'] = 1;
-        header("Location: ..");
-      }
-
-    }
-    else {
-      $_SESSION['name_no_exist'] = 1;
-      header("Location: ..");
-    }
-
-}
 
 echo "
     <head>
@@ -76,6 +44,45 @@ echo "
 ?>
 
 <main>
+    
+    <?php
+
+session_start();
+if($_SERVER["REQUEST_METHOD"]=="POST") {
+    // username and password sent
+    $username = $mysqli->real_escape_string(
+        $_POST['username']);
+    $password = $mysqli->real_escape_string(
+        $_POST['password']);
+
+
+    if (User::user_exists($mysqli, $username)) {
+      $theUser = User::from_name($mysqli,$username);
+
+      if ($theUser->is_password($password)) {
+        $_SESSION['user_id'] = $theUser->user_id;
+        $_SESSION['user_name'] = $theUser->user_name;
+        $theUser->update_last_active($mysqli);
+        if(isset($_SESSION['current_page'])) {
+            header ("Location: " . $_SESSION['current_page']);
+        }
+        else{
+            header("Location: ../Home/");
+        }
+      }
+      else {
+        $_SESSION['wrong_pass'] = 1;
+        //header("Location: ..");
+      }
+
+    }
+    else {
+      $_SESSION['name_no_exist'] = 1;
+      //header("Location: ..");
+    }
+
+}
+?>
 <body>
     <h3>Login</h3>
     <form method='post'>
