@@ -11,6 +11,7 @@ class User {
   public $user_date;
   public $last_active;
   public $pw_is_hashed;
+  public $responses_checked_at;
 
 
   public static function from_name($conn, $name) {
@@ -27,7 +28,9 @@ class User {
 
   protected function fill_from_name($conn, $name) {
     $query = "
-      SELECT user_id, user_name, user_pass, user_email, user_date, last_active, pw_is_hashed, user_salt, responses_checked_at
+      SELECT user_id, user_name, user_pass, user_email,
+       user_date, last_active, pw_is_hashed, user_salt,
+       responses_checked_at
       FROM users
       WHERE user_name = '" . $name . "'";
     $result = $conn->query($query);
@@ -112,19 +115,19 @@ class User {
       SET last_active = (SELECT NOW())
       WHERE user_id = " . $this->user_id;
     $result = $conn->query($query);
-          if (!$result) {
-            echo $query;
-            die($conn->error);
-        }
+    if (!$result) {
+        echo $query;
+        die($conn->error);
+    }
     $query2 = "
       SELECT last_active
       FROM users
       WHERE USER_ID = " . $this->user_id;
     $result = $conn->query($query2);
-          if (!$result) {
-            echo $query;
-            die($conn->error);
-        }
+    if (!$result) {
+        echo $query;
+        die($conn->error);
+    }
     $row = $result->fetch_assoc();
     $active = $row['last_active'];
     $this->last_active = $active;
@@ -149,23 +152,75 @@ class User {
       FROM users
       WHERE user_name = '" . $name . "'";
     $result = $conn->query($query);
+    if (!$result) {
+        echo $query;
+        die($conn->error);
+    }
     return ($result->num_rows != 0);
   }
 
-  public function response_id_list($conn) {
-    $query = "select r.response_id, r.response_date
+  public function new_response_id_list($conn) {
+    $query = "select r.response_id as id
       from responses r
       left join responses_top rt
       on rt.response_top_id = r.response_id
       left join responses r1
       on r1.response_id = rt.response_parent
+      left join users u1
+      on u1.user_id = r1.response_author
       left join responses_below rb
       on rb.response_below_id = r.response_id
       left join responses r2
       on r2.response_id = rb.response_parent
-      where r1.response_author = 2 or r2.response_author = " . $this->user_id
-      . "order by r.response_date desc";
+      left join users u2
+      on u2.user_id = r2.response_author
+      where (u1.user_id = " . $this->user_id
+      . " and u1.responses_checked_at < r.response_date)
+        or (u2.user_id = " . $this->user_id
+        . " and u2.responses_checked_at < r.response_date)
+      order by r.response_date desc";
     $result = $conn->query($query);
+    if (!$result) {
+        echo $query;
+        die($conn->error);
+    }
+    $id_array = array();
+    while ($row=$result->fetch_assoc()) {
+      $id_array[] = $row['id'];
+    }
+    return $id_array;
+  }
+
+  public function old_response_id_list($conn) {
+    $query = "select r.response_id
+      from responses r
+      left join responses_top rt
+      on rt.response_top_id = r.response_id
+      left join responses r1
+      on r1.response_id = rt.response_parent
+      left join users u1
+      on u1.user_id = r1.response_author
+      left join responses_below rb
+      on rb.response_below_id = r.response_id
+      left join responses r2
+      on r2.response_id = rb.response_parent
+      left join users u2
+      on u2.user_id = r2.response_author
+      where (u1.user_id = " . $this->user_id
+      . " and u1.responses_checked_at > r.response_date)
+        or (u2.user_id = " . $this->user_id
+        . " and u2.responses_checked_at > r.response_date)
+      order by r.response_date desc";
+    $result = $conn->query($query);
+    if (!$result) {
+        echo $query;
+        die($conn->error);
+    }
+    $id_array = array();
+    while ($row=$result->fetch_assoc()) {
+      $id_array[] = $row['id'];
+    }
+    return $id_array;
 
   }
 

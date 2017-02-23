@@ -44,7 +44,7 @@ echo "
 ?>
 
 <main>
-    
+
     <?php
 
 session_start();
@@ -57,12 +57,12 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
 
 
     if (User::user_exists($mysqli, $username)) {
-      $theUser = User::from_name($mysqli,$username);
+      $the_user = User::from_name($mysqli,$username);
 
-      if ($theUser->is_password($password)) {
-        $_SESSION['user_id'] = $theUser->user_id;
-        $_SESSION['user_name'] = $theUser->user_name;
-        $theUser->update_last_active($mysqli);
+      if ($the_user->is_password($password)) {
+        $_SESSION['user_id'] = $the_user->user_id;
+        $_SESSION['user_name'] = $the_user->user_name;
+        $the_user->update_last_active($mysqli);
         if(isset($_SESSION['current_page'])) {
             header ("Location: " . $_SESSION['current_page']);
         }
