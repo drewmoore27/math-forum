@@ -17,7 +17,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
     $password = $mysqli->real_escape_string(
         $_POST['password']);
 
-    if (User::user_exists($mysqli, $username) {
+    if (User::user_exists($mysqli, $username)) {
       $theUser = User::fill_from_name($mysqli,$username);
 
       if ($theUser->is_password($password)) {
