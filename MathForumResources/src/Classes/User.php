@@ -146,7 +146,7 @@ class User {
       on rb.response_below_id = r.response_id
       left join responses r2
       on r2.response_id = rb.response_parent
-      where r1.response_author = 2 or r2.response_author = " $this->user_id
+      where r1.response_author = 2 or r2.response_author = " . $this->user_id
       . "order by r.response_date desc";
     $result = $conn->query($query);
 
