@@ -1,16 +1,4 @@
-<html>
-   <style type="text/css">
-    .container {
-        width: 500px;
-        clear: both;
-    }
-    .container input {
-        width: 100%;
-        clear: both;
-    }
-
-    </style>
-    
+<html>    
 <main>
 <?php
 
