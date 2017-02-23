@@ -17,39 +17,31 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
     $password = $mysqli->real_escape_string(
         $_POST['password']);
 
-    $login_query = "
-    SELECT user_id, user_name
-    FROM users
-    WHERE user_name = '"
-        . $username .
-        "'
-    AND user_pass = '"
-        . $password .
-        "'";
-    $login_result = $mysqli->query($login_query);
+    if (User::user_exists($mysqli, $username) {
+      $theUser = User::fill_from_name($mysqli,$username);
 
-    if($login_row = $login_result->fetch_assoc()) {
+      if ($theUser->is_password($password)) {
         $_SESSION['user_id'] =$login_row['user_id'];
         $_SESSION['user_name'] = $login_row['user_name'];
-        $active_query = "
-            UPDATE users
-            SET last_active = (select(now()))
-            WHERE user_id =" . $login_row['user_id'];
-        $mysqli->query($active_query);
-
-        //Return to entry page (if redirected to Login)
+        $newUser->update_last_active($mysqli);
         if(isset($_SESSION['current_page'])) {
             header ("Location: " . $_SESSION['current_page']);
         }
         else{
             header("Location: ../Home/");
         }
+      }
+      else {
+        $_SESSION['wrong_pass'] = 1;
+        header("Location: ..");
+      }
+
+    }
+    else {
+      $_SESSION['name_no_exist'] = 1;
+      header("Location: ..");
     }
 
-    else {
-     echo "Error." ;
-     header("Location: ..");
-    }
 }
 
 echo "
@@ -92,6 +84,16 @@ echo "
         <input type='submit'>
     </form>
     <p>Or <a href="../Signup">signup here.</a></p>
+    <?php
+    if (isset($_SESSION['wrong_pass'])) {
+      echo "<p>Wrong password</p>";
+      unset($_SESSION['wrong_pass']);
+    }
+    if (isset($_SESSION['name_no_exist'])) {
+      echo "<p>Username does not exist.</p>";
+      unset($_SESSION['name_no_exist']);
+    }
+     ?>
 
 </body>
 </main>

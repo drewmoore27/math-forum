@@ -38,7 +38,10 @@ class User {
 
   protected function fill_from_id($conn, $id) {
     $query = "
-      SELECT user_id, user_name, user_pass, user_email, user_date, last_active, pw_is_hashed, user_salt
+      SELECT
+        user_id, user_name, user_pass, user_email,
+        user_date, last_active, pw_is_hashed, user_salt,
+        responses_checked_at
       FROM users
       WHERE user_id =
     " . $id;
@@ -56,6 +59,7 @@ class User {
     $this->last_active = $row['last_active'];
     $this->pw_is_hashed = $row['pw_is_hashed'];
     $this->user_salt = $row['user_salt'];
+    $this->responses_checked_at = $row['responses_checked_at'];
   }
 
 
@@ -93,6 +97,22 @@ class User {
     $this->user_email = $email;
   }
 
+  public function update_last_active($conn) {
+    $query = "
+      UPDATE users
+      SET last_active = (SELECT NOW())
+      WHERE user_id = " . $this->user_id;
+    $conn->query($query);
+    $query2 = "
+      SELECT last_active
+      FROM users
+      WHERE USER_ID = " . $this->user_id;
+    $result = $conn->query($query2);
+    $row = $result->fetch_assoc();
+    $active = $row['last_active'];
+    $this->last_active = $active;
+  }
+
   public function check_update_password($conn, $current_pass, $pass1, $pass2) {
     if (!$this->is_password($current_pass)) {
       return 0;   // if wrong password entered, return false
@@ -106,8 +126,30 @@ class User {
     }
   }
 
+  public static function user_exists($conn,$name) {
+    $query = "
+      SELECT user_name
+      FROM users
+      WHERE user_name = '" . $name . "'";
+    $result = $conn->query($query);
+    return ($result->num_rows != 0);
+  }
+
   public function response_id_list($conn) {
-    
+    $query = "select r.response_id, r.response_date
+      from responses r
+      left join responses_top rt
+      on rt.response_top_id = r.response_id
+      left join responses r1
+      on r1.response_id = rt.response_parent
+      left join responses_below rb
+      on rb.response_below_id = r.response_id
+      left join responses r2
+      on r2.response_id = rb.response_parent
+      where r1.response_author = 2 or r2.response_author = " $this->user_id
+      . "order by r.response_date desc";
+    $result = $conn->query($query);
+
   }
 
 
